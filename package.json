@@ -1,25 +1,26 @@
 {
-  "name": "wa-exportviewer",
-  "version": "2.0.0",
-  "license": "AGPL-3.0-or-later",
-  "private": true,
+  "name": "wa-export-viewer",
+  "version": "2.1.0",
+  "type": "module",
   "scripts": {
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
   },
+  "license": "MIT",
   "devDependencies": {
-    "sass": "^1.60.0",
-    "typescript": "^4.9.5",
-    "vite": "^4.1.1",
-    "vite-plugin-solid": "^2.5.0"
+    "sass": "^1.99.0",
+    "solid-devtools": "^0.34.3",
+    "typescript": "^5.7.2",
+    "vite": "^7.1.4",
+    "vite-plugin-solid": "^2.11.8"
   },
   "dependencies": {
-    "@solidjs/router": "^0.8.2",
-    "bulma": "^0.9.4",
-    "solid-icons": "^1.0.4",
-    "solid-js": "^1.6.10",
-    "whatsapp-chat-parser": "^4.0.0"
+    "@solidjs/router": "^0.16.1",
+    "bulma": "^1.0.4",
+    "solid-icons": "^1.2.0",
+    "solid-js": "^1.9.5",
+    "whatsapp-chat-parser": "^4.0.2"
   }
 }

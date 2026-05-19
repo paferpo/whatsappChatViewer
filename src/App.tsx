@@ -1,16 +1,11 @@
-import { Route, Routes } from '@solidjs/router';
 import Navbar from './components/Navbar';
-import Home from './views/Home';
-import Viewer from './views/Viewer';
+import type { ParentProps, Component } from 'solid-js';
 
-const App = () => {
+const App: Component = (props: ParentProps) => {
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path="/" component={Home} />
-        <Route path="/viewer" component={Viewer} />
-      </Routes>
+      {props.children}
     </>
   );
 }

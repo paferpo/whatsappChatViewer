@@ -1,10 +1,13 @@
 /* @refresh reload */
 import { render } from "solid-js/web";
+import 'solid-devtools';
 
 import "./styles/bulma.scss";
 import "./styles/whatsapp.scss";
 import App from "./App";
-import { Router } from "@solidjs/router";
+import { Route, Router } from "@solidjs/router";
+import Home from "./views/Home";
+import Viewer from "./views/Viewer";
 
 const root = document.getElementById("root");
 
@@ -15,8 +18,9 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 }
 
 render(() => (
-  <Router>
-    <App />
+  <Router root={App}>
+    <Route path="/" component={Home} />
+    <Route path="/viewer" component={Viewer} />
   </Router>
   ), root!
 );

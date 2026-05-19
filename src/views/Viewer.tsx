@@ -1,8 +1,8 @@
-import { createSignal, For, onCleanup, onMount } from 'solid-js';
+import { type Component, createSignal, For, onCleanup, onMount } from 'solid-js';
 import type { Message } from 'whatsapp-chat-parser';
 import store from '../store';
 
-const Viewer = () => {
+const Viewer: Component = () => {
   const [shownMessages, setShownMessages] = createSignal([] as Message[]);
   const [participants, setParticipants] = createSignal([] as string[]);
   const [active, setActive] = createSignal('');
@@ -115,50 +115,52 @@ const Viewer = () => {
 
   return (
     <section id='wrapper' class='section'>
-      <div class='columns is-mobile is-vcentered is-multiline'>
-        <div class='column is-narrow'>
-          <div class='field has-addons'>
-            <div class='control'>
-              <input
-                onChange={(e) => (date = e.target.value)}
-                value={date}
-                class='input'
-                type='date'
-              />
-            </div>
-            <div class='control'>
-              <button onClick={searchByDate} class='button is-info'>
-                Search
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class='column is-narrow'>
-          <div class='field'>
-            <label class='label'>Active participant</label>
-            <div class='control'>
-              <div class='select'>
-                <select onChange={(e) => setActive(e.target.value)}>
-                  <For each={participants()}>
-                    {(participant) => (
-                      <option
-                        value={participant}
-                        selected={active() === participant}
-                      >
-                        {participant}
-                      </option>
-                    )}
-                  </For>
-                </select>
+      <div class="box">
+        <div class='columns is-centered is-vcentered is-multiline'>
+          <div class='column is-narrow'>
+            <div class='field has-addons'>
+              <div class='control'>
+                <input
+                  onChange={(e) => (date = e.target.value)}
+                  value={date}
+                  class='input'
+                  type='date'
+                />
+              </div>
+              <div class='control'>
+                <button onClick={searchByDate} class='button is-info'>
+                  Search
+                </button>
               </div>
             </div>
           </div>
-        </div>
-        <div class='column is-narrow'>
-          <div class='buttons'>
-            <button onClick={viewAll} class='button is-danger'>
-              Show all messages
-            </button>
+          <div class='column is-narrow'>
+            <div class='field'>
+              <label class='label'>Active participant</label>
+              <div class='control'>
+                <div class='select'>
+                  <select onChange={(e) => setActive(e.target.value)}>
+                    <For each={participants()}>
+                      {(participant) => (
+                        <option
+                          value={participant}
+                          selected={active() === participant}
+                        >
+                          {participant}
+                        </option>
+                      )}
+                    </For>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class='column is-narrow'>
+            <div class='buttons'>
+              <button onClick={viewAll} class='button is-danger'>
+                Show all messages
+              </button>
+            </div>
           </div>
         </div>
       </div>

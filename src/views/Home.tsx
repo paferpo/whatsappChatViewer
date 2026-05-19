@@ -1,10 +1,10 @@
 import { useNavigate } from "@solidjs/router";
 import { FaSolidSpinner, FaSolidUpload } from "solid-icons/fa";
-import { createSignal, Show } from "solid-js";
+import { type Component, createSignal, Show } from "solid-js";
 import { parseString } from "whatsapp-chat-parser";
 import store from "../store";
 
-const Home = () => {
+const Home: Component = () => {
   const navigate = useNavigate();
   const [parsing, setParsing] = createSignal(false);
   const setMessages = store[1];

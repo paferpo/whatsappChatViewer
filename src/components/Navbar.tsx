@@ -1,5 +1,5 @@
 import type { Component } from 'solid-js';
-import { FaBrandsGithub, FaSolidHouse } from 'solid-icons/fa';
+import { FaSolidCodeBranch, FaSolidHouse } from 'solid-icons/fa';
 import { useNavigate } from '@solidjs/router';
 import store from '../store';
 
@@ -29,9 +29,9 @@ const Navbar: Component = () => {
       </div>
       <div class="navbar-menu">
         <div class="navbar-end">
-          <a class="navbar-item" href="https://github.com/pablouser1/wa-export-viewer" target="_blank">
+          <a class="navbar-item" href="https://codeberg.org/ferreiro/WA-Export-Viewer" target="_blank">
             <span class="icon">
-              <FaBrandsGithub />
+              <FaSolidCodeBranch />
             </span>
             <span>Source</span>
           </a>

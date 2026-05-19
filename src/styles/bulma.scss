@@ -1,30 +1,40 @@
-@charset "utf-8";
-// Utilities
-@import "../../node_modules/bulma/sass/utilities/_all.sass";
+@forward "bulma/sass/utilities";
 
 // Base
-@import "../../node_modules/bulma/sass/base/_all.sass";
+@forward "bulma/sass/base";
 
-// Elements
-@import "../../node_modules/bulma/sass/elements/button.sass";
-@import "../../node_modules/bulma/sass/elements/container.sass";
-@import "../../node_modules/bulma/sass/elements/icon.sass";
-@import "../../node_modules/bulma/sass/elements/other.sass";
-@import "../../node_modules/bulma/sass/elements/title.sass";
+// -- Components -- //
+@forward "bulma/sass/components/navbar";
 
-// Components
-@import "../../node_modules/bulma/sass/components/navbar.sass";
+// -- Elements -- //
+@forward "bulma/sass/elements/box";
+@forward "bulma/sass/elements/button";
+@forward "bulma/sass/elements/icon";
+@forward "bulma/sass/elements/title";
 
-// Form
-@import "../../node_modules/bulma/sass/form/shared.sass";
-@import "../../node_modules/bulma/sass/form/input-textarea.sass";
-@import "../../node_modules/bulma/sass/form/select.sass";
-@import "../../node_modules/bulma/sass/form/file.sass";
-@import "../../node_modules/bulma/sass/form/tools.sass";
+// -- Form -- //
+@forward "bulma/sass/form/shared";
+@forward "bulma/sass/form/checkbox-radio";
+@forward "bulma/sass/form/file";
+@forward "bulma/sass/form/input-textarea";
+@forward "bulma/sass/form/select";
+@forward "bulma/sass/form/tools";
 
-// Grids
-@import "../../node_modules/bulma/sass/grid/columns.sass";
+// -- Grid -- //
+@forward "bulma/sass/grid/columns";
 
-// Layout
-@import "../../node_modules/bulma/sass/layout/hero.sass";
-@import "../../node_modules/bulma/sass/layout/section.sass";
+// -- Helpers -- //
+@forward "bulma/sass/helpers/color";
+@forward "bulma/sass/helpers/position";
+@forward "bulma/sass/helpers/spacing";
+@forward "bulma/sass/helpers/typography";
+@forward "bulma/sass/helpers/visibility";
+
+// -- Layout -- //
+@forward "bulma/sass/layout/container";
+@forward "bulma/sass/layout/hero";
+@forward "bulma/sass/layout/section";
+
+
+// Import the themes so that all CSS variables have a value
+@forward "bulma/sass/themes";
