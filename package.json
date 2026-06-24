@@ -10,17 +10,18 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "sass": "^1.99.0",
-    "solid-devtools": "^0.34.3",
-    "typescript": "^5.7.2",
-    "vite": "^7.1.4",
-    "vite-plugin-solid": "^2.11.8"
+    "sass": "1.99.0",
+    "solid-devtools": "0.34.5",
+    "typescript": "5.9.3",
+    "vite": "7.3.5",
+    "vite-plugin-solid": "2.11.12"
   },
   "dependencies": {
-    "@solidjs/router": "^0.16.1",
-    "bulma": "^1.0.4",
-    "solid-icons": "^1.2.0",
-    "solid-js": "^1.9.5",
-    "whatsapp-chat-parser": "^4.0.2"
+    "@solidjs/router": "0.16.1",
+    "bulma": "1.0.4",
+    "fflate": "0.8.3",
+    "solid-icons": "1.2.0",
+    "solid-js": "1.9.13",
+    "whatsapp-chat-parser": "4.0.2"
   }
 }

@@ -1,12 +1,14 @@
 import { type Component, createSignal, For, onCleanup, onMount } from 'solid-js';
 import type { Message } from 'whatsapp-chat-parser';
+import ImageModal from '../components/ImageModal';
+import MessageContent from '../components/MessageContent';
 import store from '../store';
 
 const Viewer: Component = () => {
   const [shownMessages, setShownMessages] = createSignal([] as Message[]);
   const [participants, setParticipants] = createSignal([] as string[]);
   const [active, setActive] = createSignal('');
-  const messages = store[0];
+  const messages = store[0].messages;
   let count = 0;
   let date = '';
 
@@ -115,6 +117,7 @@ const Viewer: Component = () => {
 
   return (
     <section id='wrapper' class='section'>
+      <ImageModal />
       <div class="box">
         <div class='columns is-centered is-vcentered is-multiline'>
           <div class='column is-narrow'>
@@ -179,10 +182,8 @@ const Viewer: Component = () => {
               >
                 <div class='txt'>
                   {!isChained(i()) && <p class='name'>{message.author}</p>}
+                  <MessageContent message={message} chained={isChained(i())} />
                   <span class='timestamp'>{parseDate(message.date)}</span>
-                  <p class='message' classList={{ follow: isChained(i()) }}>
-                    {message.message}
-                  </p>
                 </div>
                 {!isChained(i()) && (
                   <div
