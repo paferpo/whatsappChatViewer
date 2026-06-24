@@ -111,9 +111,11 @@ const Viewer: Component = () => {
     window.onscroll = null;
   });
 
-  // Set participants and set first one as active
+  // Set participants, defaulting active to "Pablete" when present, else the first one
   handleParticipants();
-  setActive(participants()[0]);
+  setActive(
+    participants().includes('Pablete') ? 'Pablete' : participants()[0],
+  );
 
   return (
     <section id='wrapper' class='section'>
