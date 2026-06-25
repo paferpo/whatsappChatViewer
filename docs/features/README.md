@@ -9,10 +9,10 @@ One spec per topic; implement in roughly this order — the shared
 | 1 | Search in Chat | [01-search-in-chat.md](01-search-in-chat.md) | planned |
 | 2 | Recent files history (delete) | [02-recent-files-history.md](02-recent-files-history.md) | done — polish only |
 | 3 | Scroll-to-bottom button | [03-scroll-to-bottom.md](03-scroll-to-bottom.md) | planned |
-| 4 | Chat / Media / Docs tabs (+ shared refactor) | [04-tabs-layout.md](04-tabs-layout.md) | planned |
-| 5 | Media gallery tab | [05-media-gallery.md](05-media-gallery.md) | planned |
-| 6 | Docs gallery tab | [06-docs-gallery.md](06-docs-gallery.md) | planned |
-| 7 | CI/CD releases (macOS + Windows) | [07-ci-cd-releases.md](07-ci-cd-releases.md) | planned |
+| 4 | Chat / Media / Docs tabs (+ shared refactor) | [04-tabs-layout.md](04-tabs-layout.md) | done |
+| 5 | Media gallery tab | [05-media-gallery.md](05-media-gallery.md) | done |
+| 6 | Docs gallery tab | [06-docs-gallery.md](06-docs-gallery.md) | done |
+| 7 | CI/CD releases (macOS + Windows) | [07-ci-cd-releases.md](07-ci-cd-releases.md) | done |
 
 ## Decisions
 - **Recent-files delete:** already implemented; only minor polish.
