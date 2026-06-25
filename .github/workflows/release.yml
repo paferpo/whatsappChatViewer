@@ -43,7 +43,7 @@ jobs:
           # WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: 'WA Export Viewer ${{ github.ref_name }}'
+          releaseName: 'WhatsappChatViewer ${{ github.ref_name }}'
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}

@@ -4,7 +4,7 @@ export interface RecentChat {
   openedAt: number;
 }
 
-const STORAGE_KEY = "wa-export-viewer:recent-chats";
+const STORAGE_KEY = "whatsapp-chat-viewer:recent-chats";
 const MAX_RECENT = 8;
 
 export const getRecentChats = (): RecentChat[] => {

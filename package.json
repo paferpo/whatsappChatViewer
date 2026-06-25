@@ -1,7 +1,8 @@
 {
-  "name": "wa-export-viewer",
-  "version": "1.0.2",
+  "name": "whatsapp-chat-viewer",
+  "version": "1.0.3",
   "type": "module",
+  "author": "Pablo Fernández <paferpo@gmail.com>",
   "scripts": {
     "start": "vite",
     "dev": "vite",
@@ -11,7 +12,7 @@
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build"
   },
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "devDependencies": {
     "@tauri-apps/cli": "^2.11.3",
     "sass": "1.99.0",

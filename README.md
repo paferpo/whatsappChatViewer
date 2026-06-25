@@ -65,7 +65,7 @@ The app is also packaged as a desktop app via [Tauri](https://tauri.app/).
   GitHub Release — publish it manually after checking the artifacts.
 - **Unsigned installs:** releases are currently unsigned.
   - **macOS:** right-click the app → Open (or run
-    `xattr -dr com.apple.quarantine /path/to/WA Export Viewer.app`) the first time.
+    `xattr -dr com.apple.quarantine /path/to/WhatsappChatViewer.app`) the first time.
   - **Windows:** click "More info" → "Run anyway" past the SmartScreen warning.
 
 ## Credits

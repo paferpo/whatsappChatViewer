@@ -59,7 +59,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: 'WA Export Viewer ${{ github.ref_name }}'
+          releaseName: 'WhatsappChatViewer ${{ github.ref_name }}'
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
