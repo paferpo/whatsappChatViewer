@@ -70,6 +70,16 @@ const tokenize = (text: string): Part[] => {
   return parts;
 };
 
+const escapeRegExp = (s: string): string => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/** Splits text on a case-insensitive term match, keeping the matched substrings
+ * (with their original casing) as separate segments to wrap in <mark>. */
+const splitHighlight = (text: string, term: string): { value: string; match: boolean }[] => {
+  if (!term) return [{ value: text, match: false }];
+  const re = new RegExp(`(${escapeRegExp(term)})`, "gi");
+  return text.split(re).map((value, i) => ({ value, match: i % 2 === 1 }));
+};
+
 const YouTubeEmbed: Component<{ id: string }> = (props) => {
   const [playing, setPlaying] = createSignal(false);
   return (
@@ -110,7 +120,7 @@ const Thumbnail: Component<{ url: string }> = (props) => (
   />
 );
 
-const MessageContent: Component<{ message: Message; chained: boolean }> = (
+const MessageContent: Component<{ message: Message; chained: boolean; highlight?: string }> = (
   props,
 ) => {
   const media = () => store[0].media;
@@ -152,7 +162,15 @@ const MessageContent: Component<{ message: Message; chained: boolean }> = (
                     {part.url}
                   </a>
                 ) : (
-                  <span>{part.value}</span>
+                  <For each={splitHighlight(part.value, props.highlight ?? "")}>
+                    {(segment) =>
+                      segment.match ? (
+                        <mark class="wa-highlight">{segment.value}</mark>
+                      ) : (
+                        <span>{segment.value}</span>
+                      )
+                    }
+                  </For>
                 )
               }
             </For>

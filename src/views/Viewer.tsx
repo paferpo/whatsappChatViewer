@@ -1,4 +1,4 @@
-import { type Component, createSignal, For, onCleanup, onMount } from 'solid-js';
+import { type Component, createSignal, For, onCleanup, onMount, Show } from 'solid-js';
 import type { Message } from 'whatsapp-chat-parser';
 import ImageModal from '../components/ImageModal';
 import MessageContent from '../components/MessageContent';
@@ -9,9 +9,13 @@ const Viewer: Component = () => {
   const [shownMessages, setShownMessages] = createSignal([] as Message[]);
   const [participants, setParticipants] = createSignal([] as string[]);
   const [active, setActive] = createSignal('');
+  const [query, setQuery] = createSignal('');
+  const [searchTerm, setSearchTerm] = createSignal('');
+  const [activeHit, setActiveHit] = createSignal(-1);
   const messages = store[0].messages;
   let count = 0;
   let date = '';
+  let searchDebounce: ReturnType<typeof setTimeout> | undefined;
 
   const displayMessages = (num = -1) => {
     if (num === -1) {
@@ -103,6 +107,42 @@ const Viewer: Component = () => {
     }
   };
 
+  const hits = () => {
+    const q = searchTerm().toLowerCase();
+    if (!q) return [] as number[];
+    const result: number[] = [];
+    messages.forEach((message, i) => {
+      if (message.message?.toLowerCase().includes(q)) result.push(i);
+    });
+    return result;
+  };
+
+  const onQueryInput = (value: string) => {
+    setQuery(value);
+    if (searchDebounce) clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => {
+      setSearchTerm(value.trim());
+      setActiveHit(-1);
+    }, 150);
+  };
+
+  const goToHit = (n: number) => {
+    const list = hits();
+    if (!list.length) return;
+    const i = (n + list.length) % list.length;
+    setActiveHit(i);
+    const idx = list[i];
+    if (!document.getElementById(`message${idx}`)) displayMessages(idx + 30);
+    scrollToMessage(idx);
+  };
+
+  const matchLabel = () => {
+    const list = hits();
+    if (!searchTerm()) return '';
+    if (!list.length) return 'No matches';
+    return `${activeHit() + 1} / ${list.length}`;
+  };
+
   onMount(() => {
     displayMessages();
     enableScroll();
@@ -110,6 +150,7 @@ const Viewer: Component = () => {
 
   onCleanup(() => {
     window.onscroll = null;
+    if (searchDebounce) clearTimeout(searchDebounce);
   });
 
   // Set participants, defaulting active to "Pablete" when present, else the first one
@@ -139,6 +180,47 @@ const Viewer: Component = () => {
                   Search
                 </button>
               </div>
+            </div>
+          </div>
+          <div class='column is-narrow'>
+            <div class='field has-addons'>
+              <div class='control'>
+                <input
+                  onInput={(e) => onQueryInput(e.currentTarget.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') goToHit(activeHit() + 1);
+                  }}
+                  value={query()}
+                  class='input'
+                  type='text'
+                  placeholder='Search in chat'
+                />
+              </div>
+              <div class='control'>
+                <button
+                  onClick={() => goToHit(activeHit() - 1)}
+                  class='button'
+                  disabled={!hits().length}
+                  title='Previous match'
+                >
+                  ‹
+                </button>
+              </div>
+              <div class='control'>
+                <button
+                  onClick={() => goToHit(activeHit() + 1)}
+                  class='button'
+                  disabled={!hits().length}
+                  title='Next match'
+                >
+                  ›
+                </button>
+              </div>
+              <Show when={searchTerm()}>
+                <div class='control'>
+                  <span class='button is-static'>{matchLabel()}</span>
+                </div>
+              </Show>
             </div>
           </div>
           <div class='column is-narrow'>
@@ -186,7 +268,7 @@ const Viewer: Component = () => {
               >
                 <div class='txt'>
                   {!isChained(i()) && <p class='name'>{message.author}</p>}
-                  <MessageContent message={message} chained={isChained(i())} />
+                  <MessageContent message={message} chained={isChained(i())} highlight={searchTerm()} />
                   <span class='timestamp'>{parseDate(message.date)}</span>
                 </div>
                 {!isChained(i()) && (
