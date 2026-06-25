@@ -1,18 +1,16 @@
 import { type Component, createSignal, For, Show } from "solid-js";
 import { type Message, parseString } from "whatsapp-chat-parser";
 import store from "../store";
-import { isAudioName, isImageName, isTextName, isVideoName, objectUrlFor } from "../utils/media";
+import { attachmentNameFor, isAudioName, isImageName, isTextName, isVideoName, objectUrlFor } from "../utils/media";
 import { openImage } from "./ImageModal";
 import { openTextChat, openTextChatRaw } from "./TextChatModal";
 
 const URL_RE = /(https?:\/\/[^\s]+)/g;
 
-/** Recovers a captioned attachment tag (e.g. "name.txt <adjunto: id-name.txt>") that
- * whatsapp-chat-parser misses because its own regex only matches when the tag is the
- * very first thing in the message. */
-const ATTACHMENT_TAG_RE = /<[^<>:]+:\s*([^<>]+)>\s*$/;
-
-const openNestedTextChat = async (name: string, blob: Blob): Promise<void> => {
+/** Opens a `.txt` attachment in the nested-chat modal, parsed as a WhatsApp
+ * export if possible, falling back to raw text otherwise. Shared with
+ * DocsGallery for forwarded `.txt` chat exports. */
+export const openNestedTextChat = async (name: string, blob: Blob): Promise<void> => {
   const text = await blob.text();
   try {
     const messages = parseString(text, { parseAttachments: true });
@@ -126,9 +124,7 @@ const MessageContent: Component<{ message: Message; chained: boolean; highlight?
   const media = () => store[0].media;
 
   const attachment = () => {
-    const name =
-      props.message.attachment?.fileName ??
-      props.message.message.match(ATTACHMENT_TAG_RE)?.[1]?.trim();
+    const name = attachmentNameFor(props.message);
     if (!name) return null;
     const blob = media().get(name);
     return { name, blob };

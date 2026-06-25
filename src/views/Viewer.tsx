@@ -1,10 +1,14 @@
 import { type Component, createSignal, For, onCleanup, onMount, Show } from 'solid-js';
 import { FaSolidChevronDown } from 'solid-icons/fa';
 import type { Message } from 'whatsapp-chat-parser';
+import DocsGallery from '../components/DocsGallery';
 import ImageModal from '../components/ImageModal';
+import MediaGallery from '../components/MediaGallery';
 import MessageContent from '../components/MessageContent';
 import TextChatModal from '../components/TextChatModal';
 import store from '../store';
+
+type Tab = 'chat' | 'media' | 'docs';
 
 const Viewer: Component = () => {
   const [shownMessages, setShownMessages] = createSignal([] as Message[]);
@@ -14,6 +18,7 @@ const Viewer: Component = () => {
   const [searchTerm, setSearchTerm] = createSignal('');
   const [activeHit, setActiveHit] = createSignal(-1);
   const [atBottom, setAtBottom] = createSignal(true);
+  const [activeTab, setActiveTab] = createSignal<Tab>('chat');
   const messages = store[0].messages;
   let count = 0;
   let date = '';
@@ -68,6 +73,7 @@ const Viewer: Component = () => {
   };
 
   const viewAll = () => {
+    count = messages.length;
     setShownMessages(messages);
   };
 
@@ -88,7 +94,9 @@ const Viewer: Component = () => {
 
   const scrollToBottom = () => {
     viewAll();
-    requestAnimationFrame(() => scrollToMessage(messages.length - 1));
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    });
   };
 
   const scrollToMessage = (index: number) => {
@@ -97,10 +105,19 @@ const Viewer: Component = () => {
       console.log(`Scrolling to message ${index}`);
       msg.scrollIntoView({
         behavior: 'smooth',
+        block: 'center',
       });
     } else {
       console.error(`Message ${index} does not exist`);
     }
+  };
+
+  const jumpToMessage = (index: number) => {
+    setActiveTab('chat');
+    if (index >= count) {
+      displayMessages(index + 30);
+    }
+    requestAnimationFrame(() => scrollToMessage(index));
   };
 
   const searchByDate = () => {
@@ -174,133 +191,156 @@ const Viewer: Component = () => {
     <section id='wrapper' class='section'>
       <ImageModal />
       <TextChatModal />
-      <div class="box">
-        <div class='columns is-centered is-vcentered is-multiline'>
-          <div class='column is-narrow'>
-            <div class='field has-addons'>
-              <div class='control'>
-                <input
-                  onChange={(e) => (date = e.target.value)}
-                  value={date}
-                  class='input'
-                  type='date'
-                />
-              </div>
-              <div class='control'>
-                <button onClick={searchByDate} class='button is-info'>
-                  Search
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class='column is-narrow'>
-            <div class='field has-addons'>
-              <div class='control'>
-                <input
-                  onInput={(e) => onQueryInput(e.currentTarget.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') goToHit(activeHit() + 1);
-                  }}
-                  value={query()}
-                  class='input'
-                  type='text'
-                  placeholder='Search in chat'
-                />
-              </div>
-              <div class='control'>
-                <button
-                  onClick={() => goToHit(activeHit() - 1)}
-                  class='button'
-                  disabled={!hits().length}
-                  title='Previous match'
-                >
-                  ‹
-                </button>
-              </div>
-              <div class='control'>
-                <button
-                  onClick={() => goToHit(activeHit() + 1)}
-                  class='button'
-                  disabled={!hits().length}
-                  title='Next match'
-                >
-                  ›
-                </button>
-              </div>
-              <Show when={searchTerm()}>
-                <div class='control'>
-                  <span class='button is-static'>{matchLabel()}</span>
-                </div>
-              </Show>
-            </div>
-          </div>
-          <div class='column is-narrow'>
-            <div class='field'>
-              <label class='label'>Active participant</label>
-              <div class='control'>
-                <div class='select'>
-                  <select onChange={(e) => setActive(e.target.value)}>
-                    <For each={participants()}>
-                      {(participant) => (
-                        <option
-                          value={participant}
-                          selected={active() === participant}
-                        >
-                          {participant}
-                        </option>
-                      )}
-                    </For>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class='column is-narrow'>
-            <div class='buttons'>
-              <button onClick={viewAll} class='button is-danger'>
-                Show all messages
-              </button>
-            </div>
-          </div>
+      <div class="box wa-controls">
+        <div class='tabs is-boxed'>
+          <ul>
+            <li classList={{ 'is-active': activeTab() === 'chat' }}>
+              <a onClick={() => setActiveTab('chat')}>Chat</a>
+            </li>
+            <li classList={{ 'is-active': activeTab() === 'media' }}>
+              <a onClick={() => setActiveTab('media')}>Media</a>
+            </li>
+            <li classList={{ 'is-active': activeTab() === 'docs' }}>
+              <a onClick={() => setActiveTab('docs')}>Docs</a>
+            </li>
+          </ul>
         </div>
+        <Show when={activeTab() === 'chat'}>
+          <div class='columns is-centered is-vcentered is-multiline'>
+            <div class='column is-narrow'>
+              <div class='field has-addons'>
+                <div class='control'>
+                  <input
+                    onChange={(e) => (date = e.target.value)}
+                    value={date}
+                    class='input'
+                    type='date'
+                  />
+                </div>
+                <div class='control'>
+                  <button onClick={searchByDate} class='button is-info'>
+                    Search
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class='column is-narrow'>
+              <div class='field has-addons'>
+                <div class='control'>
+                  <input
+                    onInput={(e) => onQueryInput(e.currentTarget.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') goToHit(activeHit() + 1);
+                    }}
+                    value={query()}
+                    class='input'
+                    type='text'
+                    placeholder='Search in chat'
+                  />
+                </div>
+                <div class='control'>
+                  <button
+                    onClick={() => goToHit(activeHit() - 1)}
+                    class='button'
+                    disabled={!hits().length}
+                    title='Previous match'
+                  >
+                    ‹
+                  </button>
+                </div>
+                <div class='control'>
+                  <button
+                    onClick={() => goToHit(activeHit() + 1)}
+                    class='button'
+                    disabled={!hits().length}
+                    title='Next match'
+                  >
+                    ›
+                  </button>
+                </div>
+                <Show when={searchTerm()}>
+                  <div class='control'>
+                    <span class='button is-static'>{matchLabel()}</span>
+                  </div>
+                </Show>
+              </div>
+            </div>
+            <div class='column is-narrow'>
+              <div class='field'>
+                <label class='label'>Active participant</label>
+                <div class='control'>
+                  <div class='select'>
+                    <select onChange={(e) => setActive(e.target.value)}>
+                      <For each={participants()}>
+                        {(participant) => (
+                          <option
+                            value={participant}
+                            selected={active() === participant}
+                          >
+                            {participant}
+                          </option>
+                        )}
+                      </For>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class='column is-narrow'>
+              <div class='buttons'>
+                <button onClick={viewAll} class='button is-danger'>
+                  Show all messages
+                </button>
+              </div>
+            </div>
+          </div>
+        </Show>
       </div>
       <hr />
-      <div id='wa-container' class='wa-container'>
-        <For each={shownMessages()}>
-          {(message, i) => (
-            <div id={'message' + i()} class='msg'>
-              <div
-                class='bubble'
-                classList={{
-                  alt: isPrimary(message.author) && !isChained(i()),
-                  follow: isChained(i()) && !isPrimary(message.author),
-                  altfollow: isPrimary(message.author) && isChained(i()),
-                }}
-              >
-                <div class='txt'>
-                  {!isChained(i()) && <p class='name'>{message.author}</p>}
-                  <MessageContent message={message} chained={isChained(i())} highlight={searchTerm()} />
-                  <span class='timestamp'>{parseDate(message.date)}</span>
+      <Show when={activeTab() === 'chat'}>
+        <div id='wa-container' class='wa-container'>
+          <For each={shownMessages()}>
+            {(message, i) => (
+              <div id={'message' + i()} class='msg'>
+                <div
+                  class='bubble'
+                  classList={{
+                    alt: isPrimary(message.author) && !isChained(i()),
+                    follow: isChained(i()) && !isPrimary(message.author),
+                    altfollow: isPrimary(message.author) && isChained(i()),
+                  }}
+                >
+                  <div class='txt'>
+                    {!isChained(i()) && <p class='name'>{message.author}</p>}
+                    <MessageContent message={message} chained={isChained(i())} highlight={searchTerm()} />
+                    <span class='timestamp'>{parseDate(message.date)}</span>
+                  </div>
+                  {!isChained(i()) && (
+                    <div
+                      class='bubble-arrow'
+                      classList={{ alt: isPrimary(message.author) }}
+                    ></div>
+                  )}
                 </div>
-                {!isChained(i()) && (
-                  <div
-                    class='bubble-arrow'
-                    classList={{ alt: isPrimary(message.author) }}
-                  ></div>
-                )}
               </div>
-            </div>
-          )}
-        </For>
-      </div>
-      <Show when={!atBottom()}>
-        <button
-          onClick={scrollToBottom}
-          class='scroll-bottom-btn'
-          title='Scroll to bottom'
-        >
-          <FaSolidChevronDown />
-        </button>
+            )}
+          </For>
+        </div>
+        <Show when={!atBottom()}>
+          <button
+            onClick={scrollToBottom}
+            class='scroll-bottom-btn'
+            title='Scroll to bottom'
+          >
+            <FaSolidChevronDown />
+          </button>
+        </Show>
+      </Show>
+      <Show when={activeTab() === 'media'}>
+        <MediaGallery onJump={jumpToMessage} />
+      </Show>
+      <Show when={activeTab() === 'docs'}>
+        <DocsGallery onJump={jumpToMessage} />
       </Show>
     </section>
   );
