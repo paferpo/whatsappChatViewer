@@ -213,6 +213,34 @@
   height: auto;
 }
 
+.recent-chats-panel {
+  max-width: 480px;
+  margin: 2rem auto 0;
+  text-align: left;
+}
+
+.recent-chat-button {
+  flex: 1;
+  min-width: 0;
+  justify-content: flex-start;
+}
+
+.recent-chat-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.recent-chat-line {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @media only screen and (max-width: 450px) {
   .wa-container {
     width: 100%;

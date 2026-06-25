@@ -6,6 +6,7 @@
 // -- Components -- //
 @forward "bulma/sass/components/navbar";
 @forward "bulma/sass/components/modal";
+@forward "bulma/sass/components/panel";
 
 // -- Elements -- //
 @forward "bulma/sass/elements/box";
@@ -26,6 +27,7 @@
 
 // -- Helpers -- //
 @forward "bulma/sass/helpers/color";
+@forward "bulma/sass/helpers/flexbox";
 @forward "bulma/sass/helpers/position";
 @forward "bulma/sass/helpers/spacing";
 @forward "bulma/sass/helpers/typography";
