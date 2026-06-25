@@ -1,4 +1,5 @@
 import { type Component, createSignal, For, onCleanup, onMount, Show } from 'solid-js';
+import { FaSolidChevronDown } from 'solid-icons/fa';
 import type { Message } from 'whatsapp-chat-parser';
 import ImageModal from '../components/ImageModal';
 import MessageContent from '../components/MessageContent';
@@ -12,6 +13,7 @@ const Viewer: Component = () => {
   const [query, setQuery] = createSignal('');
   const [searchTerm, setSearchTerm] = createSignal('');
   const [activeHit, setActiveHit] = createSignal(-1);
+  const [atBottom, setAtBottom] = createSignal(true);
   const messages = store[0].messages;
   let count = 0;
   let date = '';
@@ -74,10 +76,19 @@ const Viewer: Component = () => {
       const bottomOfWindow =
         window.scrollY + window.innerHeight >=
         document.body.offsetHeight - 1000;
+      setAtBottom(
+        window.scrollY + window.innerHeight >=
+          document.body.offsetHeight - 50,
+      );
       if (bottomOfWindow) {
         displayMessages();
       }
     };
+  };
+
+  const scrollToBottom = () => {
+    viewAll();
+    requestAnimationFrame(() => scrollToMessage(messages.length - 1));
   };
 
   const scrollToMessage = (index: number) => {
@@ -282,6 +293,15 @@ const Viewer: Component = () => {
           )}
         </For>
       </div>
+      <Show when={!atBottom()}>
+        <button
+          onClick={scrollToBottom}
+          class='scroll-bottom-btn'
+          title='Scroll to bottom'
+        >
+          <FaSolidChevronDown />
+        </button>
+      </Show>
     </section>
   );
 };

@@ -19,7 +19,9 @@ export const openTextChatRaw = (title: string, rawText: string): void => {
   setActive({ title, rawText });
 };
 
-const close = (): void => setActive(null);
+const close = (): void => {
+  setActive(null);
+};
 
 /** Pick a default "primary" participant the same way Viewer.tsx does. */
 const primaryAuthor = (messages: Message[]): string => {
