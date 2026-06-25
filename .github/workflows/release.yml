@@ -15,18 +15,16 @@ jobs:
         include:
           - platform: macos-latest   # Apple Silicon (aarch64)
             args: '--target aarch64-apple-darwin'
-          - platform: macos-13       # Intel (x86_64) — optional
-            args: '--target x86_64-apple-darwin'
           - platform: windows-latest
             args: ''
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 20, cache: npm }
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 24, cache: npm }
       - uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ contains(matrix.platform, 'macos') && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+          targets: ${{ contains(matrix.platform, 'macos') && 'aarch64-apple-darwin' || '' }}
       - uses: swatinem/rust-cache@v2
         with: { workspaces: './src-tauri -> target' }
       - run: npm ci
