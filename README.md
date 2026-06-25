@@ -5,10 +5,14 @@ Pretty-print a WhatsApp chat export in your browser — entirely client-side, no
 ## Features
 
 - Load a raw `.txt` export, or a `.zip` export straight from WhatsApp (unzipped in-memory)
-- Inline rendering of attached photos and videos, with a click-to-expand photo viewer
+- Inline rendering of attached photos, videos, and voice notes, with a click-to-expand photo viewer
+- Forwarded chat attachments (a `.txt` chat exported as a file inside another chat) open pretty-printed in their own modal
 - Clickable links, with rich inline previews for direct image links and YouTube
+- Chat / Media / Docs tabs to browse attachments separately from the conversation
+- Search in chat, with match highlighting and next/previous navigation
 - Jump to any date, or filter messages by participant
-- Infinite scroll through long chat histories
+- Infinite scroll through long chat histories, with a scroll-to-bottom shortcut
+- Recent chats history on the desktop app, with per-entry delete
 
 ## Project setup
 
@@ -63,3 +67,9 @@ The app is also packaged as a desktop app via [Tauri](https://tauri.app/).
   - **macOS:** right-click the app → Open (or run
     `xattr -dr com.apple.quarantine /path/to/WA Export Viewer.app`) the first time.
   - **Windows:** click "More info" → "Run anyway" past the SmartScreen warning.
+
+## Credits
+
+Based on [WA-Export-Viewer](https://codeberg.org/ferreiro/WA-Export-Viewer). This fork builds on that base.
+
+Licensed under [AGPLv3](LICENSE), same as the original.

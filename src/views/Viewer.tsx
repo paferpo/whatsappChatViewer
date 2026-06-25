@@ -266,8 +266,10 @@ const Viewer: Component = () => {
               </div>
             </div>
             <div class='column is-narrow'>
-              <div class='field'>
-                <label class='label'>Active participant</label>
+              <div class='field has-addons'>
+                <div class='control'>
+                  <span class='button is-static'>Active participant</span>
+                </div>
                 <div class='control'>
                   <div class='select'>
                     <select onChange={(e) => setActive(e.target.value)}>
@@ -284,13 +286,6 @@ const Viewer: Component = () => {
                     </select>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class='column is-narrow'>
-              <div class='buttons'>
-                <button onClick={viewAll} class='button is-danger'>
-                  Show all messages
-                </button>
               </div>
             </div>
           </div>
