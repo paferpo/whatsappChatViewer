@@ -74,7 +74,7 @@ const Home: Component = () => {
     <section class="hero is-fullheight">
       <div class="hero-body">
         <div class="container has-text-centered">
-          <p class="title">Whatsapp Export Viewer</p>
+          <p class="title">Whatsapp Chat Viewer</p>
           <div class="field is-flex is-justify-content-center">
             <div class="control">
               <div class="file is-boxed">

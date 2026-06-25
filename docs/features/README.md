@@ -1,6 +1,6 @@
 # Feature roadmap
 
-Planned features for the WhatsApp Export Viewer (SolidJS + Vite + Tauri v2).
+Planned features for the WhatsApp Chat Viewer (SolidJS + Vite + Tauri v2).
 One spec per topic; implement in roughly this order — the shared
 `attachmentNameFor` refactor in doc 04 unblocks the galleries (05, 06).
 

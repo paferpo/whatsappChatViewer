@@ -1,4 +1,4 @@
-# WhatsApp Export Viewer
+# WhatsApp Chat Viewer
 
 Pretty-print a WhatsApp chat export in your browser — entirely client-side, nothing is ever uploaded.
 
