@@ -5,10 +5,10 @@ import store from '../store';
 
 const Navbar: Component = () => {
   const navigate = useNavigate();
-  const setMessages = store[1];
+  const setState = store[1];
 
   const goBack = () => {
-    setMessages([]);
+    setState({ messages: [], media: new Map() });
     navigate('/');
   };
 

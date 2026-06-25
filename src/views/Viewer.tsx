@@ -2,6 +2,7 @@ import { type Component, createSignal, For, onCleanup, onMount } from 'solid-js'
 import type { Message } from 'whatsapp-chat-parser';
 import ImageModal from '../components/ImageModal';
 import MessageContent from '../components/MessageContent';
+import TextChatModal from '../components/TextChatModal';
 import store from '../store';
 
 const Viewer: Component = () => {
@@ -120,6 +121,7 @@ const Viewer: Component = () => {
   return (
     <section id='wrapper' class='section'>
       <ImageModal />
+      <TextChatModal />
       <div class="box">
         <div class='columns is-centered is-vcentered is-multiline'>
           <div class='column is-narrow'>

@@ -3,9 +3,13 @@ import { type Component, createSignal, Show } from "solid-js";
 const [activeUrl, setActiveUrl] = createSignal<string | null>(null);
 
 /** Open the full-size image modal for the given (object) URL. */
-export const openImage = (url: string): void => setActiveUrl(url);
+export const openImage = (url: string): void => {
+  setActiveUrl(url);
+};
 
-const close = (): void => setActiveUrl(null);
+const close = (): void => {
+  setActiveUrl(null);
+};
 
 /** Single modal instance; mount once near the app root. */
 const ImageModal: Component = () => (

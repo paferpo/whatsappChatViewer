@@ -145,6 +145,25 @@
   margin: 4px 0;
 }
 
+.attachment-audio-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0;
+}
+
+.attachment-audio-icon {
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.attachment-audio {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+}
+
 .attachment-missing {
   font-style: italic;
   color: #888;
@@ -154,6 +173,16 @@
   display: inline-block;
   margin: 4px 0;
   font-weight: 500;
+}
+
+.attachment-text-button {
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
 }
 
 .link-preview {
@@ -211,6 +240,32 @@
 .image-modal-content img {
   width: 100%;
   height: auto;
+}
+
+.text-chat-modal-content {
+  max-height: 80vh;
+  overflow-y: auto;
+  background: #ece5dd;
+  padding: 1rem;
+  border-radius: 6px;
+
+  .wa-container {
+    width: 100%;
+  }
+}
+
+.text-chat-modal-title {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  word-break: break-all;
+}
+
+.text-chat-modal-raw {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #fff;
+  padding: 0.75rem;
+  border-radius: 6px;
 }
 
 .recent-chats-panel {

@@ -1,10 +1,30 @@
 import { type Component, createSignal, For, Show } from "solid-js";
-import type { Message } from "whatsapp-chat-parser";
+import { type Message, parseString } from "whatsapp-chat-parser";
 import store from "../store";
-import { isImageName, isVideoName, objectUrlFor } from "../utils/media";
+import { isAudioName, isImageName, isTextName, isVideoName, objectUrlFor } from "../utils/media";
 import { openImage } from "./ImageModal";
+import { openTextChat, openTextChatRaw } from "./TextChatModal";
 
 const URL_RE = /(https?:\/\/[^\s]+)/g;
+
+/** Recovers a captioned attachment tag (e.g. "name.txt <adjunto: id-name.txt>") that
+ * whatsapp-chat-parser misses because its own regex only matches when the tag is the
+ * very first thing in the message. */
+const ATTACHMENT_TAG_RE = /<[^<>:]+:\s*([^<>]+)>\s*$/;
+
+const openNestedTextChat = async (name: string, blob: Blob): Promise<void> => {
+  const text = await blob.text();
+  try {
+    const messages = parseString(text, { parseAttachments: true });
+    if (messages.length > 0) {
+      openTextChat(name, messages);
+      return;
+    }
+  } catch {
+    // Not a parseable WhatsApp export; fall through to raw text.
+  }
+  openTextChatRaw(name, text);
+};
 
 /** Strip trailing punctuation that commonly hugs a URL in prose. */
 const cleanUrl = (url: string): string => url.replace(/[.,!?)\]]+$/, "");
@@ -96,7 +116,9 @@ const MessageContent: Component<{ message: Message; chained: boolean }> = (
   const media = () => store[0].media;
 
   const attachment = () => {
-    const name = props.message.attachment?.fileName;
+    const name =
+      props.message.attachment?.fileName ??
+      props.message.message.match(ATTACHMENT_TAG_RE)?.[1]?.trim();
     if (!name) return null;
     const blob = media().get(name);
     return { name, blob };
@@ -149,6 +171,19 @@ const MessageContent: Component<{ message: Message; chained: boolean }> = (
                 <Thumbnail url={objectUrlFor(blob())} />
               ) : isVideoName(att().name) ? (
                 <video class="attachment-video" src={objectUrlFor(blob())} controls preload="metadata" />
+              ) : isAudioName(att().name) ? (
+                <div class="attachment-audio-wrap">
+                  <span class="attachment-audio-icon" aria-hidden="true">🎤</span>
+                  <audio class="attachment-audio" src={objectUrlFor(blob())} controls preload="metadata" />
+                </div>
+              ) : isTextName(att().name) ? (
+                <button
+                  type="button"
+                  class="message attachment-file attachment-text-button"
+                  onClick={() => openNestedTextChat(att().name, blob())}
+                >
+                  📄 {att().name}
+                </button>
               ) : (
                 <a
                   class="message attachment-file"

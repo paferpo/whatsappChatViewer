@@ -22,6 +22,10 @@ export const revokeAllObjectUrls = (): void => {
 
 const IMAGE_EXT = /\.(jpe?g|png|gif|webp)$/i;
 const VIDEO_EXT = /\.(mp4|mov|webm|m4v)$/i;
+const AUDIO_EXT = /\.(mp3|ogg|opus)$/i;
+const TEXT_EXT = /\.txt$/i;
 
 export const isImageName = (name: string): boolean => IMAGE_EXT.test(name);
 export const isVideoName = (name: string): boolean => VIDEO_EXT.test(name);
+export const isAudioName = (name: string): boolean => AUDIO_EXT.test(name);
+export const isTextName = (name: string): boolean => TEXT_EXT.test(name);
