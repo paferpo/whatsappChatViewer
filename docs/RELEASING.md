@@ -2,6 +2,23 @@
 
 How to cut a new desktop release (macOS `.dmg` + Windows `.msi`/`.exe`).
 
+## Automated: `npm run release`
+
+[scripts/release.mjs](../scripts/release.mjs) does steps 1–3 below in one go:
+bumps every version file listed in step 1, commits, tags, and pushes.
+
+```
+npm run release -- "short summary of what's in this release"
+```
+
+- Defaults to a patch bump; pass `--minor` or `--major` to bump differently,
+  or `--set=X.Y.Z` for an explicit version.
+- Shows the pending `git status` and asks for confirmation before committing
+  and pushing (skip the prompt with `--yes`).
+- After it finishes, continue from step 4 (watch the workflow) below.
+
+## Manual steps
+
 ## 1. Bump the version
 
 All of these must be bumped together to the same `X.Y.Z` — they're independent
