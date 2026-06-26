@@ -1,8 +1,10 @@
 import { type Component, createSignal, For, Show } from "solid-js";
+import { FaSolidExpand } from "solid-icons/fa";
 import { type Message, parseString } from "whatsapp-chat-parser";
 import store from "../store";
 import { attachmentNameFor, isAudioName, isImageName, isTextName, isVideoName, objectUrlFor } from "../utils/media";
 import { openImage } from "./ImageModal";
+import { openVideo } from "./VideoModal";
 import { openTextChat, openTextChatRaw } from "./TextChatModal";
 
 const URL_RE = /(https?:\/\/[^\s]+)/g;
@@ -118,6 +120,33 @@ const Thumbnail: Component<{ url: string }> = (props) => (
   />
 );
 
+/** Video attachment with a custom fullscreen button. The native `<video>`
+ * fullscreen control (and the browser Fullscreen API) is unreliable inside the
+ * Tauri WebView, so the button opens an in-app full-size overlay instead. */
+const VideoAttachment: Component<{ url: string }> = (props) => {
+  let video: HTMLVideoElement | undefined;
+
+  const open = (): void => {
+    video?.pause();
+    openVideo(props.url);
+  };
+
+  return (
+    <div class="attachment-video-wrap">
+      <video ref={video} class="attachment-video" src={props.url} controls preload="metadata" />
+      <button
+        type="button"
+        class="attachment-video-fullscreen"
+        aria-label="Fullscreen"
+        title="Fullscreen"
+        onClick={open}
+      >
+        <FaSolidExpand />
+      </button>
+    </div>
+  );
+};
+
 const MessageContent: Component<{ message: Message; chained: boolean; highlight?: string }> = (
   props,
 ) => {
@@ -184,7 +213,7 @@ const MessageContent: Component<{ message: Message; chained: boolean; highlight?
               isImageName(att().name) ? (
                 <Thumbnail url={objectUrlFor(blob())} />
               ) : isVideoName(att().name) ? (
-                <video class="attachment-video" src={objectUrlFor(blob())} controls preload="metadata" />
+                <VideoAttachment url={objectUrlFor(blob())} />
               ) : isAudioName(att().name) ? (
                 <div class="attachment-audio-wrap">
                   <span class="attachment-audio-icon" aria-hidden="true">🎤</span>

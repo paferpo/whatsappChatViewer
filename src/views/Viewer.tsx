@@ -6,6 +6,7 @@ import ImageModal from '../components/ImageModal';
 import MediaGallery from '../components/MediaGallery';
 import MessageContent from '../components/MessageContent';
 import TextChatModal from '../components/TextChatModal';
+import VideoModal from '../components/VideoModal';
 import store from '../store';
 
 type Tab = 'chat' | 'media' | 'docs';
@@ -190,6 +191,7 @@ const Viewer: Component = () => {
   return (
     <section id='wrapper' class='section'>
       <ImageModal />
+      <VideoModal />
       <TextChatModal />
       <div class="box wa-controls">
         <div class='tabs is-boxed'>
