@@ -1,6 +1,6 @@
 {
   "name": "whatsapp-chat-viewer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "author": "Pablo Fernández <paferpo@gmail.com>",
   "scripts": {

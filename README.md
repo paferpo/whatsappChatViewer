@@ -54,15 +54,13 @@ The app is also packaged as a desktop app via [Tauri](https://tauri.app/).
 
 - **Local build:** `npm run tauri:build` produces installers under
   `src-tauri/target/release/bundle/`.
-- **Cutting a release:** bump the version in `package.json` and
-  `src-tauri/tauri.conf.json` (they must match), then:
-  ```
-  git tag vX.Y.Z
-  git push --tags
-  ```
-  This triggers [`.github/workflows/release.yml`](.github/workflows/release.yml),
-  which builds macOS and Windows installers and attaches them to a **draft**
-  GitHub Release — publish it manually after checking the artifacts.
+- **Cutting a release:** see [docs/RELEASING.md](docs/RELEASING.md) for the
+  full process (which files' versions to bump, tagging, watching the
+  workflow). Short version: bump versions, `git tag vX.Y.Z`,
+  `git push --tags` — this triggers
+  [`.github/workflows/release.yml`](.github/workflows/release.yml), which
+  builds macOS and Windows installers and attaches them to a **draft** GitHub
+  Release — publish it manually after checking the artifacts.
 - **Unsigned installs:** releases are currently unsigned.
   - **macOS:** right-click the app → Open (or run
     `xattr -dr com.apple.quarantine /path/to/WhatsappChatViewer.app`) the first time.
